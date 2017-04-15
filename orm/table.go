@@ -1,11 +1,12 @@
 package orm
 
 import (
+	"bytes"
+	"common-go/log"
 	"database/sql"
 	"reflect"
 	"strings"
-	"bytes"
-	"common/log"
+
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -18,11 +19,11 @@ type pair struct {
 }
 
 type Table struct {
-	db *sql.DB
-	name string
-	beanType reflect.Type
+	db         *sql.DB
+	name       string
+	beanType   reflect.Type
 	nameMapper map[string]pair
-	showSql bool
+	showSql    bool
 }
 
 func getTagNameMapper(beanType reflect.Type) map[string]pair {
@@ -69,7 +70,7 @@ func getTagNameMapper(beanType reflect.Type) map[string]pair {
 				dbType = "VARCHAR(255)"
 			}
 		}
-		mapper[name] = pair{K:f.Name, V:dbType}
+		mapper[name] = pair{K: f.Name, V: dbType}
 	}
 	return mapper
 }
@@ -79,22 +80,22 @@ func NewTable(beanType reflect.Type, driver, dataSourceName string) (*Table, err
 	if err != nil {
 		return nil, err
 	}
-	return &Table{db:db,
-		name:strings.ToLower(beanType.Name()),
-		beanType:beanType,
-		nameMapper:getTagNameMapper(beanType)}, nil
+	return &Table{db: db,
+		name:       strings.ToLower(beanType.Name()),
+		beanType:   beanType,
+		nameMapper: getTagNameMapper(beanType)}, nil
 }
 
-func (table *Table)Close() error {
+func (table *Table) Close() error {
 	return table.db.Close()
 }
 
-func (table *Table)ShowSql(show bool) *Table {
+func (table *Table) ShowSql(show bool) *Table {
 	table.showSql = show
 	return table
 }
 
-func (table *Table)CreateDbTable() error {
+func (table *Table) CreateDbTable() error {
 	buffer := bytes.NewBufferString("CREATE TABLE IF NOT EXISTS ")
 	buffer.WriteString(table.name)
 	buffer.WriteString("(")
@@ -115,18 +116,18 @@ func (table *Table)CreateDbTable() error {
 	return err
 }
 
-func (table *Table)NewQuery() *Query {
-	return &Query{table:table}
+func (table *Table) NewQuery() *Query {
+	return &Query{table: table}
 }
 
-func (table *Table)NewInsert() *Insert {
-	return &Insert{table:table}
+func (table *Table) NewInsert() *Insert {
+	return &Insert{table: table}
 }
 
-func (table *Table)NewDelete() *Delete {
-	return &Delete{table:table}
+func (table *Table) NewDelete() *Delete {
+	return &Delete{table: table}
 }
 
-func (table *Table)NewUpdate() *Update {
-	return &Update{table:table}
+func (table *Table) NewUpdate() *Update {
+	return &Update{table: table}
 }
