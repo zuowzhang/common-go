@@ -40,7 +40,7 @@ func (builder *LogBuilder) SingleFileSize(size int64) *LogBuilder {
 	return builder
 }
 
-func (builder *LogBuilder) build() *Logger {
+func (builder *LogBuilder) Build() *Logger {
 	return &Logger{path: builder.path,
 		singleFileSize: builder.singleFileSize,
 		cache:          make(chan string, 100)}

@@ -16,7 +16,7 @@ func TestZipFile(t *testing.T) {
 }
 
 func TestLogger_SingleFileSize(t *testing.T) {
-	logger := NewLogBuilder().build()
+	logger := NewLogBuilder().Build()
 	for idx := 0; idx < 100; idx++ {
 		time.Sleep(100 * time.Millisecond)
 		logger.D("logger_test", "测试测试测试测试测试测试")
