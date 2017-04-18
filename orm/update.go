@@ -1,8 +1,8 @@
 package orm
 
 import (
-	"reflect"
 	"errors"
+	"reflect"
 )
 
 var UpdateTag string = "Update"
@@ -11,35 +11,35 @@ type Update struct {
 	table *Table
 	filter
 	columns []string
-	bean interface{}
+	bean    interface{}
 }
 
-func (update *Update)Where(sql string, args... interface{}) *Update {
-	update.filter = filter{sql:" WHERE " + sql, args:args}
-	return update;
+func (update *Update) Where(sql string, args ...interface{}) *Update {
+	update.filter = filter{sql: " WHERE " + sql, args: args}
+	return update
 }
 
-func (update *Update)And(sql string, args... interface{}) *Update {
+func (update *Update) And(sql string, args ...interface{}) *Update {
 	update.and(sql, args...)
 	return update
 }
 
-func (update *Update)Or(sql string, args... interface{}) *Update {
+func (update *Update) Or(sql string, args ...interface{}) *Update {
 	update.or(sql, args...)
 	return update
 }
 
-func (update *Update)Columns(column ...string) *Update {
+func (update *Update) Columns(column ...string) *Update {
 	update.columns = append(update.columns, column...)
 	return update
 }
 
-func (update *Update)Values(bean interface{}) *Update {
+func (update *Update) Values(bean interface{}) *Update {
 	update.bean = bean
 	return update
 }
 
-func (update *Update)Exec() (int64, error) {
+func (update *Update) Exec() (int64, error) {
 	sql := "UPDATE " + update.table.name + " SET "
 	if len(update.columns) == 0 {
 		for column := range update.table.nameMapper {

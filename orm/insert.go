@@ -9,12 +9,12 @@ type Insert struct {
 	beans []interface{}
 }
 
-func (insert *Insert)Values(bean ...interface{}) *Insert {
+func (insert *Insert) Values(bean ...interface{}) *Insert {
 	insert.beans = append(insert.beans, bean...)
 	return insert
 }
 
-func (insert *Insert)Exec() (affected int64, err error) {
+func (insert *Insert) Exec() (affected int64, err error) {
 	sql := "INSERT INTO " + insert.table.name + " VALUES"
 	var args []interface{}
 	for idx, bean := range insert.beans {

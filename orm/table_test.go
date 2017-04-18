@@ -1,14 +1,15 @@
 package orm
 
 import (
-	"testing"
 	"reflect"
+	"testing"
+	"os"
 )
 
 type User struct {
-	Name string `name:"name"`
-	Address string `ignore:"true"`
-	Age int
+	Name        string `name:"name"`
+	Address     string `ignore:"true"`
+	Age         int
 	PhoneNumber string
 }
 
@@ -44,7 +45,8 @@ func TestQuery_Get(t *testing.T) {
 	}
 	beans, err := table.NewQuery().
 		Where("age = ?", 18).
-		Or("name = ?", "zhangsan").Get()
+		Or("name = ?", "zhangsan").
+		Get()
 
 	if err != nil {
 		t.Fatal(err)
@@ -69,7 +71,7 @@ func TestInsert_Exec(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	affected, err := table.NewInsert().Values(User{Age:18}, User{Name:"zhangsan"}).Exec()
+	affected, err := table.NewInsert().Values(User{Age: 18}, User{Name: "zhangsan"}).Exec()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -94,7 +96,7 @@ func TestUpdate_Exec(t *testing.T) {
 		t.Fatal(err)
 	}
 	affected, err := table.NewUpdate().Where("name = ?", "zhangsan").
-		Values(User{Age:19, PhoneNumber:"13866666666", Name:"zhangsan"}).
+		Values(User{Age: 19, PhoneNumber: "13866666666", Name: "zhangsan"}).
 		Exec()
 	if err != nil {
 		t.Fatal(err)

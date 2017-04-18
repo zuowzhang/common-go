@@ -9,22 +9,22 @@ type Query struct {
 	filter
 }
 
-func (query *Query)Where(sql string, args ...interface{}) *Query {
-	query.filter = filter{sql:" WHERE " + sql, args:args}
+func (query *Query) Where(sql string, args ...interface{}) *Query {
+	query.filter = filter{sql: " WHERE " + sql, args: args}
 	return query
 }
 
-func (query *Query)And(sql string, args ...interface{}) *Query {
+func (query *Query) And(sql string, args ...interface{}) *Query {
 	query.and(sql, args...)
 	return query
 }
 
-func (query *Query)Or(sql string, args ...interface{}) *Query {
+func (query *Query) Or(sql string, args ...interface{}) *Query {
 	query.or(sql, args...)
 	return query
 }
 
-func (query *Query)Get() (beans []interface{}, err error) {
+func (query *Query) Get() (beans []interface{}, err error) {
 	sql := "SELECT * FROM " + query.table.name + query.sql
 	if query.table.showSql {
 		ormLogger.D(QueryTag, "Exec# %s", sql)
@@ -48,7 +48,7 @@ func (query *Query)Get() (beans []interface{}, err error) {
 	return
 }
 
-func (query *Query)Count(columns ...string) (count int64, err error) {
+func (query *Query) Count(columns ...string) (count int64, err error) {
 	sql := "SELECT COUNT("
 	if len(columns) == 0 {
 		sql += "*"
