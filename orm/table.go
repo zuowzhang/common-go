@@ -12,7 +12,7 @@ import (
 
 var TableTag string = "Table"
 
-var ormLogger *log.Logger = log.NewLogger()
+var ormLogger *log.Logger = log.NewLogBuilder().Build()
 
 type pair struct {
 	K, V string
